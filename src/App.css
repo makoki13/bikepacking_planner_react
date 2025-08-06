@@ -1,42 +1,340 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.App {
   text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 30px;
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.app-header h1 {
+  margin: 0;
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Layout de dos columnas */
+.main-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  min-height: 500px;
+}
+
+.content-area {
+  flex: 1;
+  text-align: left;
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  min-height: 400px;
+}
+
+.file-list-container {
+  flex: 0 0 300px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  align-self: flex-start;
+}
+
+.file-list h3 {
+  margin-top: 0;
+  color: #495057;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 10px;
+}
+
+.file-list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  margin: 8px 0;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e9ecef;
+}
+
+.file-item:hover {
+  background-color: #e3f2fd;
+  transform: translateX(5px);
+  border-color: #2196f3;
+}
+
+.file-icon {
+  font-size: 1.2rem;
+}
+
+.file-name {
+  font-size: 0.95rem;
+  color: #495057;
+  flex: 1;
+  text-align: left;
+}
+
+.point-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+}
+
+.legend-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.legend-title {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.3rem;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .file-list-container {
+    flex: none;
+    width: 100%;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Botón de ayuda/leyenda */
+.legend-button {
+  position: fixed;
+  top: 30px;
+  left: 100px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 999; /* Cambiado de 1000 a 999 */
+}
+
+.legend-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.legend-button:active {
+  transform: scale(0.95);
+}
+
+/* Ventana flotante de leyenda */
+.legend-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Cambiado de 1001 a 1000 */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.legend-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.legend-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 90%;
+  max-height: 90%;
+  width: 600px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.7);
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1001; /* Aseguramos que el contenido del modal esté por encima */
+}
+
+/* Ventana flotante de leyenda */
+.legend-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.legend-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.legend-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 90%;
+  max-height: 90%;
+  width: 600px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.7);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.legend-modal-overlay.open .legend-modal {
+  transform: scale(1);
+}
+
+.legend-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.legend-modal-title {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.legend-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.legend-modal-close:hover {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.legend-modal-content {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.legend-grid-modal {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.legend-item-modal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.legend-item-modal .point-type-badge {
+  min-width: 60px;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Botón flotante para móviles */
+@media (max-width: 768px) {
+  .legend-button {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  
+  .legend-modal {
+    margin: 20px;
+    width: calc(100% - 40px);
+    padding: 20px;
+  }
+  
+  .legend-grid-modal {
+    grid-template-columns: 1fr;
+  }
 }
